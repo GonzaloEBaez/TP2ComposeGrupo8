@@ -12,17 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TP2Compose"
         tools:targetApi="31">
+        <!-- Actividad principal que se lanzará al inicio -->
         <activity
-            android:name=".JuegoP1"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.TP2Compose">
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".JuegoP1" />
     </application>
 
 </manifest>

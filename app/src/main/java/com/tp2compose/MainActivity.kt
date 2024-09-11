@@ -1,7 +1,5 @@
 package com.tp2compose
 
-import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,17 +22,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tp2compose.ui.theme.TP2ComposeTheme
 import androidx.compose.ui.unit.sp
-import androidx.datastore.preferences.preferencesDataStore
-import com.tp2compose.ui.theme.Black
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "score")
-val MAX_SCORE_KEY = intPreferencesKey("best_score")
+//import java.util.prefs.Preferences
+
+//val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "score")
+
+//val MAX_SCORE_KEY = intPreferencesKey("best_score")
 
 //usar datastore y room en vez de lo pedido en el tp
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
         setContent {
             TP2ComposeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding -> //andamio de la app? permite mostrar barra superior
@@ -97,9 +95,9 @@ class punto1 : ComponentActivity() {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(vertical = 50.dp)){
-                Titulo("Puntaje Actual 0", Color.Black)
+                Titulo("Puntaje Actual 0")
                 Spacer(modifier = Modifier.size(10.dp))
-                SubTitulo(text ="Puntaje Máximo 0" , color = Color.Black)
+                SubTitulo(text ="Puntaje Máximo 0")
                 Spacer(modifier = Modifier.size(10.dp))
                 Row {
                     for (i in 1..5){
@@ -113,34 +111,31 @@ class punto1 : ComponentActivity() {
     }
 
 @Composable
-fun Titulo(text: String, color: Color, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        color = color,
-        modifier = modifier
-    )
+fun Titulo(text: String, modifier: Modifier = Modifier) {
+    Text(text = text)
+    //text = text,
+    //color = color,
+    //modifier = modifier
 }
 @Composable
-fun SubTitulo(text: String, color: Color, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        color = color,
+fun SubTitulo(text: String, modifier: Modifier = Modifier) {
+    Text(text = text,
         fontSize = 10.sp,
         fontWeight = FontWeight.SemiBold,
         fontStyle = FontStyle.Italic,
     )
 }
 
-@composable
+@Composable
 fun NumericButton(number: Int)
 {
 
 }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TP2ComposeTheme {
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun GreetingPreview() {
+    //TP2ComposeTheme {
+  //  }
+//}

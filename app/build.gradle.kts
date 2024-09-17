@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-kapt")
 }
 
 android {
@@ -62,6 +63,17 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.androidx.datastore.core.android)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+
+
+    // Dependencias de SQLite
+    implementation("androidx.sqlite:sqlite:2.2.0")
+
+    // Dependencias de Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
 
 
     testImplementation(libs.junit)

@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".JuegoP1" />
+        <activity android:name=".ABMCiudadP2" />
     </application>
 
 </manifest>

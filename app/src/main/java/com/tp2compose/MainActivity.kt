@@ -62,7 +62,10 @@ fun Inicio() {
             Text(text = "Adiviná el número")
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { /* Navegar a Juego 2 */ }) {
+        Button(onClick = {
+            val intent = Intent(context, ABMCiudadP2::class.java)
+            context.startActivity(intent)
+        }) {
             Text(text = "Juego 2")
         }
     }

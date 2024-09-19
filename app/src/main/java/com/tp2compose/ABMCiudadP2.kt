@@ -56,7 +56,14 @@ fun ABMCiudadScreen() {
     // Llamada para cargar los nombres de los países
     LaunchedEffect(Unit) {
         paises = dbHelper.obtenerNombresPaises()
-        println("Paises obtenidos: $paises")
+    }
+
+    // Función para limpiar todos los campos
+    fun limpiarCampos() {
+        ciudadNombre = ""
+        paisNombre = ""
+        poblacion = ""
+        mensaje = "Campos limpiados"
     }
 
     fun saveCiudad() {
@@ -262,6 +269,13 @@ fun ABMCiudadScreen() {
         ) {
             Text(text = "Modificar Población", fontSize = 16.sp)
         }
+            // Botón para limpiar todos los campos
+            Button(
+                onClick = { limpiarCampos() },
+                colors= ButtonDefaults.buttonColors(containerColor= Color.Magenta, contentColor= Color.White)
+            ) {
+                Text(text="Limpiar Campos", fontSize=16.sp)
+            }
 
         Spacer(modifier = Modifier.size(20.dp))
 

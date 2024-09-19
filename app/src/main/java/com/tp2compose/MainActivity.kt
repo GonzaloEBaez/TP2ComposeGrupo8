@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             Inicio()
         }
@@ -65,8 +66,14 @@ fun Inicio() {
         Button(onClick = {
             val intent = Intent(context, ABMCiudadP2::class.java)
             context.startActivity(intent)
-        }) {
-            Text(text = "Juego 2")
+        },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Blue , // Color del botón
+                contentColor = Color.White // Color del texto
+            )
+        )
+        {
+            Text(text = "Crear capitales!")
         }
     }
 }
@@ -76,113 +83,4 @@ fun GreetingPreview() {
     Inicio()
 }
 
-//import java.util.prefs.Preferences
-
-//val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "score")
-
-//val MAX_SCORE_KEY = intPreferencesKey("best_score")
-
-//usar datastore y room en vez de lo pedido en el tp
-//class MainActivity : ComponentActivity() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        //enableEdgeToEdge()
-//        setContent {
-//            TP2ComposeTheme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding -> //andamio de la app? permite mostrar barra superior
-//                    Greeting(
-//                        name = "Android", // Parametro del compose
-//                        modifier = Modifier.padding(innerPadding)
-//                    )
-//                }
-//            }
-//        }
-//    }
-//}
-//
-//@Composable //Una de las funciones básicas, buscarlas. Esta funcion representa un elem de la pantalla
-//
-//fun Greeting(name: String, modifier: Modifier = Modifier) {
-//    Column (
-//        verticalArrangement = Arrangement.Center, //Alineacion vertical
-//        horizontalAlignment = Alignment.CenterHorizontally, //Alineacion horizontal
-//        modifier = Modifier.fillMaxSize() //Tamaño de la pantalla
-//    )
-//    {Row(
-//        horizontalArrangement = Arrangement.Center, //Alineacion horizontal
-//        modifier = Modifier.fillMaxSize() //Tamaño de la pantalla
-//    ){
-//      //  Icon() //Icono
-//    }
-//        Text(
-//            text = "Hello $name!",
-//            fontSize = 10.sp, //Recordar importarlo
-//            modifier = modifier //Modifica el componente segun como lo necesitemos en el momento
-//        )
-//        //Nueva funcion, falta indicar como dibujar el elemento
-//        Text(
-//            text = "Otro Texto!",
-//            fontSize = 10.sp, //Recordar importarlo
-//            modifier = modifier //Modifica el componente segun como lo necesitemos en el momento
-//        )
-//    }
-//
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    TP2ComposeTheme {
-//        Greeting("Android")
-//    }
-//}
-////Punto1
-//class punto1 : ComponentActivity() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
-//        setContent {
-//            Column(
-//                //verticalArrangement = Arrangement.Center, //Alineacion vertical
-//                horizontalAlignment = Alignment.CenterHorizontally, //Alineacion horizontal
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(vertical = 50.dp)){
-//                Titulo("Puntaje Actual 0")
-//                Spacer(modifier = Modifier.size(10.dp))
-//                SubTitulo(text ="Puntaje Máximo 0")
-//                Spacer(modifier = Modifier.size(10.dp))
-//                Row {
-//                    for (i in 1..5){
-//                    NumericButton(number = i)
-//                }
-//            }
-//                //Tamaño de la pantalla
-//
-//            }
-//        }
-//    }
-//
-//@Composable
-//fun Titulo(text: String, modifier: Modifier = Modifier) {
-//    Text(text = text)
-//    //text = text,
-//    //color = color,
-//    //modifier = modifier
-//}
-//@Composable
-//fun SubTitulo(text: String, modifier: Modifier = Modifier) {
-//    Text(text = text,
-//        fontSize = 10.sp,
-//        fontWeight = FontWeight.SemiBold,
-//        fontStyle = FontStyle.Italic,
-//    )
-//}
-//
-//@Composable
-//fun NumericButton(number: Int)
-//{
-//
-//}
-//}
 

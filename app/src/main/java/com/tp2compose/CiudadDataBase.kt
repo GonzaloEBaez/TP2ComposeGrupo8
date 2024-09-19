@@ -4,7 +4,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.content.ContentValues
-import android.database.Cursor
 
 class CiudadDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -55,23 +54,31 @@ class CiudadDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         insertarDatosIniciales()
     }
 
+    // Inserta datos iniciales
     fun insertarDatosIniciales() {
         val db = writableDatabase
-        val paises = listOf("Argentina", "Brasil", "Chile", "Uruguay", "Paraguay")
+        val paisesExistentes = obtenerNombresPaises()
 
-        for (pais in paises) {
-            val values = ContentValues().apply {
-                put(COLUMN_PAIS_NOMBRE, pais)
+        // Solo insertar si no hay países existentes
+        if (paisesExistentes.isEmpty()) {
+            val paises = listOf("Argentina", "Brasil", "Chile", "Uruguay", "Paraguay")
+
+            for (pais in paises) {
+                val values = ContentValues().apply {
+                    put(COLUMN_PAIS_NOMBRE, pais)
+                }
+                val result = db.insert(TABLE_PAIS, null, values)
+                if (result == -1L) {
+                    println("Error al insertar el país: $pais")
+                } else {
+                    println("Insertado el país: $pais con ID: $result")
+                }
             }
-            val result = db.insert(TABLE_PAIS, null, values)
-            if (result == -1L) {
-                println("Error al insertar el país: $pais")
-            } else {
-                println("Insertado el país: $pais con ID: $result")
-            }
+            // Mensaje de depuración
+            println("Datos iniciales insertados.")
+        } else {
+            println("Los países ya están insertados: $paisesExistentes")
         }
-        // Mensaje de depuración
-        println("Datos iniciales insertados.")
     }
 
     // Insertar un país

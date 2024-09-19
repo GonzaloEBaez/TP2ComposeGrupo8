@@ -1,9 +1,9 @@
 package com.tp2compose
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,10 +18,8 @@ import com.tp2compose.ui.theme.TP2ComposeTheme
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.foundation.text.BasicTextField
 
 class ABMCiudadP2 : ComponentActivity() {
     private lateinit var dbHelper: CiudadDatabaseHelper
@@ -59,8 +57,6 @@ fun ABMCiudadScreen() {
     LaunchedEffect(Unit) {
         paises = dbHelper.obtenerNombresPaises()
         println("Paises obtenidos: $paises")
-
-
     }
 
     fun saveCiudad() {
@@ -116,7 +112,7 @@ fun ABMCiudadScreen() {
         }
     }
 
-    Column(
+        Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
@@ -135,40 +131,71 @@ fun ABMCiudadScreen() {
             label = { Text("Nombre de la Ciudad") },
             modifier = Modifier.padding(bottom = 10.dp)
         )
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(text = "Selecciona un País:", style = MaterialTheme.typography.titleLarge)
 
-        // Campo para seleccionar el país con un DropdownMenu
-        Box(modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)) {
-            TextField(
-                value = paisNombre,
-                onValueChange = { paisNombre = it },
-                readOnly = true,
-                label = { Text("Selecciona un País") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { expanded = !expanded }
-                    .padding(16.dp)
-            )
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                paises.forEach { pais ->
-                    DropdownMenuItem(
-                        text = { Text(pais) },
-                        onClick = {
-                            paisNombre = pais
-                            expanded = false
+                Spacer(modifier = Modifier.height(10.dp))
+
+                // Campo para seleccionar el país con un DropdownMenu
+                Box(modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().clickable { expanded = !expanded },
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = if (paisNombre.isEmpty()) "Selecciona un País" else paisNombre,
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(16.dp)
+                                .background(Color.LightGray)
+                        )
+
+                        // Botón "X" para limpiar la selección
+                        if (paisNombre.isNotEmpty()) {
+                            Text(
+                                text = "✖",
+                                fontSize = 20.sp,
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .clickable {
+                                        paisNombre = "" // Limpiar la selección del país
+                                    }
+                            )
                         }
-                    )
+                    }
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        // Imprimir los países en la consola
+                        println("Los países del dropdown son: ${paises}")
+
+                        if (paises.isEmpty()) {
+                            // Mostrar mensaje si no hay países
+                            DropdownMenuItem(
+                                onClick = {},
+                                text = { Text("No hay países en la BD") }
+                            )
+                        } else {
+                            paises.forEach { pais ->
+                                DropdownMenuItem(
+                                    text = { Text(pais) },
+                                    onClick = {
+                                        paisNombre = pais // Guardar el país seleccionado
+                                        expanded = false // Cerrar el menú desplegable
+                                    }
+                                )
+                            }
+                        }
+                    }
                 }
             }
-        }
-
-        TextField(
+                TextField(
             value = poblacion,
             onValueChange = { newValue -> poblacion = newValue },
-            label = { Text("Población (opcional)") },
+            label = { Text("Población") },
             modifier = Modifier.padding(bottom = 20.dp)
         )
 

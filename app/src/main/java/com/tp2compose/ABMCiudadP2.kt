@@ -24,8 +24,14 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.foundation.text.BasicTextField
 
 class ABMCiudadP2 : ComponentActivity() {
+    private lateinit var dbHelper: CiudadDatabaseHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Inicializar la base de datos
+        dbHelper = CiudadDatabaseHelper(this)
+        dbHelper.initializeDatabase()
+
         setContent {
             TP2ComposeTheme {
                 ABMCiudadScreen()

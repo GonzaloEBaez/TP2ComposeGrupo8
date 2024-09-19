@@ -52,6 +52,8 @@ class CiudadDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
     fun initializeDatabase() {
         val db = writableDatabase
         insertarDatosIniciales()
+        //eliminarTodasLasCiudades()
+        // obtenerNombresCiudades()
     }
 
     // Inserta datos iniciales
@@ -182,6 +184,35 @@ class CiudadDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         println("Paises obtenidos: $paises") // Añadir esta línea para debuguear
         return paises
     }
+
+    // Obtener nombres de todas las ciudades
+    fun obtenerNombresCiudades(): List<String> {
+        val db = readableDatabase
+        val query = "SELECT $COLUMN_CIUDAD_NOMBRE FROM $TABLE_CIUDAD"
+        val cursor = db.rawQuery(query, null)
+        val ciudades = mutableListOf<String>()
+
+        val columnIndex = cursor.getColumnIndexOrThrow(COLUMN_CIUDAD_NOMBRE)
+
+        while (cursor.moveToNext()) {
+            val nombre = cursor.getString(columnIndex)
+            ciudades.add(nombre)
+        }
+
+        cursor.close()
+
+        // Mostrar las ciudades obtenidas por consola
+        println("Ciudades obtenidas: $ciudades") // Añadir esta línea para debuguear
+        return ciudades
+    }
+
+    // Eliminar todas las ciudades
+    fun eliminarTodasLasCiudades() {
+        val db = writableDatabase
+        db.execSQL("DELETE FROM $TABLE_CIUDAD")
+        println("Todas las ciudades han sido eliminadas.")
+    }
+
 
 
 

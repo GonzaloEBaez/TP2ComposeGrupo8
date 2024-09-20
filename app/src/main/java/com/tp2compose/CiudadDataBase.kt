@@ -83,6 +83,13 @@ class CiudadDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         }
     }
 
+    // Función para eliminar todos los países
+    fun eliminarTodosLosPaises() {
+        val db = writableDatabase
+        db.delete(TABLE_PAIS, null, null)  // Borrar todos los registros de la tabla de países
+        println("Todos los países han sido eliminados.")
+    }
+
     // Insertar un país
     fun insertPais(nombre: String) {
         val db = writableDatabase
@@ -121,7 +128,7 @@ class CiudadDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
     fun consultarCiudad(nombre: String): String {
         val db = readableDatabase
         val query = """
-        SELECT c.$COLUMN_CIUDAD_NOMBRE, c.$COLUMN_CIUDAD_POBLACION, p.$COLUMN_PAIS_NOMBRE 
+        SELECT c.$COLUMN_CIUDAD_NOMBRE AS ciudadNombre, c.$COLUMN_CIUDAD_POBLACION, p.$COLUMN_PAIS_NOMBRE AS paisNombre 
         FROM $TABLE_CIUDAD c 
         INNER JOIN $TABLE_PAIS p ON c.$COLUMN_CIUDAD_PAIS_ID = p.$COLUMN_PAIS_ID 
         WHERE c.$COLUMN_CIUDAD_NOMBRE = ?
@@ -130,9 +137,9 @@ class CiudadDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         val cursor = db.rawQuery(query, arrayOf(nombre))
         return try {
             if (cursor.moveToFirst()) {
-                val ciudadNombre = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CIUDAD_NOMBRE))
+                val ciudadNombre = cursor.getString(cursor.getColumnIndexOrThrow("ciudadNombre"))
                 val poblacion = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_CIUDAD_POBLACION))
-                val paisNombre = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PAIS_NOMBRE))
+                val paisNombre = cursor.getString(cursor.getColumnIndexOrThrow("paisNombre"))
                 "Ciudad: $ciudadNombre, Población: $poblacion, País: $paisNombre"
             } else {
                 "Ciudad no encontrada"
@@ -212,11 +219,6 @@ class CiudadDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         db.execSQL("DELETE FROM $TABLE_CIUDAD")
         println("Todas las ciudades han sido eliminadas.")
     }
-
-
-
-
-
 
 
 }

@@ -28,6 +28,7 @@ class ABMCiudadP2 : ComponentActivity() {
         super.onCreate(savedInstanceState)
         // Inicializar la base de datos
         dbHelper = CiudadDatabaseHelper(this)
+        dbHelper.eliminarTodosLosPaises()
         dbHelper.initializeDatabase()
 
         setContent {
@@ -120,33 +121,39 @@ fun ABMCiudadScreen() {
     }
 
         Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp)
-    ) {
-        Text(
-            text = "Gestión de Ciudad",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 20.dp)
-        )
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp)
+        ) {
+            Text(
+                text = "Gestión de Ciudad",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 20.dp)
+            )
 
-        TextField(
-            value = ciudadNombre,
-            onValueChange = { newValue -> ciudadNombre = newValue },
-            label = { Text("Nombre de la Ciudad") },
-            modifier = Modifier.padding(bottom = 10.dp)
-        )
+            // TextField de la ciudad
+            TextField(
+                value = ciudadNombre,
+                onValueChange = { newValue -> ciudadNombre = newValue },
+                label = { Text("Nombre de la Ciudad") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp)
+            )
+
+            // Dropdown del país
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(text = "Selecciona un País:", style = MaterialTheme.typography.titleLarge)
-
                 Spacer(modifier = Modifier.height(10.dp))
 
-                // Campo para seleccionar el país con un DropdownMenu
                 Box(modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().clickable { expanded = !expanded },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { expanded = !expanded }
+                            .background(Color.LightGray),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -154,10 +161,8 @@ fun ABMCiudadScreen() {
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(16.dp)
-                                .background(Color.LightGray)
                         )
 
-                        // Botón "X" para limpiar la selección
                         if (paisNombre.isNotEmpty()) {
                             Text(
                                 text = "✖",
@@ -165,7 +170,7 @@ fun ABMCiudadScreen() {
                                 modifier = Modifier
                                     .padding(16.dp)
                                     .clickable {
-                                        paisNombre = "" // Limpiar la selección del país
+                                        paisNombre = ""
                                     }
                             )
                         }
@@ -176,11 +181,7 @@ fun ABMCiudadScreen() {
                         onDismissRequest = { expanded = false },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        // Imprimir los países en la consola
-                        println("Los países del dropdown son: ${paises}")
-
                         if (paises.isEmpty()) {
-                            // Mostrar mensaje si no hay países
                             DropdownMenuItem(
                                 onClick = {},
                                 text = { Text("No hay países en la BD") }
@@ -190,8 +191,8 @@ fun ABMCiudadScreen() {
                                 DropdownMenuItem(
                                     text = { Text(pais) },
                                     onClick = {
-                                        paisNombre = pais // Guardar el país seleccionado
-                                        expanded = false // Cerrar el menú desplegable
+                                        paisNombre = pais
+                                        expanded = false
                                     }
                                 )
                             }
@@ -199,94 +200,98 @@ fun ABMCiudadScreen() {
                     }
                 }
             }
-                TextField(
-            value = poblacion,
-            onValueChange = { newValue -> poblacion = newValue },
-            label = { Text("Población") },
-            modifier = Modifier.padding(bottom = 20.dp)
-        )
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
+            // TextField de la población
+            TextField(
+                value = poblacion,
+                onValueChange = { newValue -> poblacion = newValue },
+                label = { Text("Población") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp)
+            )
+
+            // Botones con el mismo tamaño
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button(
+                    onClick = { saveCiudad() },
+                    modifier = Modifier.weight(1f).padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Blue,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Guardar Ciudad", fontSize = 16.sp)
+                }
+
+                Button(
+                    onClick = { consultarCiudad() },
+                    modifier = Modifier.weight(1f).padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Blue,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Consultar Ciudad", fontSize = 16.sp)
+                }
+            }
+
+            Spacer(modifier = Modifier.size(10.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button(
+                    onClick = { borrarCiudad() },
+                    modifier = Modifier.weight(1f).padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Blue,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Borrar Ciudad", fontSize = 16.sp)
+                }
+
+                Button(
+                    onClick = { borrarCiudadesPorPais() },
+                    modifier = Modifier.weight(1f).padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Blue,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Borrar Ciudades por País", fontSize = 16.sp)
+                }
+            }
+
+            Spacer(modifier = Modifier.size(10.dp))
+
             Button(
-                onClick = { saveCiudad() },
+                onClick = { modificarPoblacion() },
+                modifier = Modifier.fillMaxWidth().padding(5.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Blue,
-                    contentColor = Color.White
+                    contentColor = Color.Black
                 )
             ) {
-                Text(text = "Guardar Ciudad", fontSize = 16.sp)
+                Text(text = "Modificar Población", fontSize = 16.sp)
             }
 
-            Button(
-                onClick = { consultarCiudad() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.White
-                )
-            ) {
-                Text(text = "Consultar Ciudad", fontSize = 16.sp)
-            }
-        }
+            Spacer(modifier = Modifier.size(20.dp))
 
-        Spacer(modifier = Modifier.size(10.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            Button(
-                onClick = { borrarCiudad() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Red,
-                    contentColor = Color.White
-                )
-            ) {
-                Text(text = "Borrar Ciudad", fontSize = 16.sp)
-            }
-
-            Button(
-                onClick = { borrarCiudadesPorPais() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Gray,
-                    contentColor = Color.White
-                )
-            ) {
-                Text(text = "Borrar Ciudades por País", fontSize = 16.sp)
-            }
-        }
-
-        Spacer(modifier = Modifier.size(10.dp))
-
-        Button(
-            onClick = { modificarPoblacion() },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Cyan,
-                contentColor = Color.Black
+            Text(
+                text = mensaje,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
             )
-        ) {
-            Text(text = "Modificar Población", fontSize = 16.sp)
         }
-            // Botón para limpiar todos los campos
-            Button(
-                onClick = { limpiarCampos() },
-                colors= ButtonDefaults.buttonColors(containerColor= Color.Magenta, contentColor= Color.White)
-            ) {
-                Text(text="Limpiar Campos", fontSize=16.sp)
-            }
-
-        Spacer(modifier = Modifier.size(20.dp))
-
-        Text(
-            text = mensaje,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
     }
-}
+
 
 @Preview(showBackground = true)
 @Composable

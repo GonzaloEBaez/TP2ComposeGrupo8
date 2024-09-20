@@ -50,7 +50,7 @@ fun JuegoNumeros() {
     var randomNumber by remember { mutableStateOf(Random.nextInt(1, 6)) }
     var intentos by remember { mutableStateOf(0) }
     var mensaje by remember { mutableStateOf("") }
-    val maxIntentos = 5
+    val maxIntentos = 4
 
     // Cargar el mejor puntaje al inicio
     LaunchedEffect(Unit) {
@@ -108,7 +108,7 @@ fun JuegoNumeros() {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                for (i in 1..5) {
+                for (i in 1..6) {
                     BotonNumerico(number = i) {
                         if (i == randomNumber) {
                             currentScore += 10
@@ -137,7 +137,7 @@ fun JuegoNumeros() {
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.size(10.dp))
+                    Spacer(modifier = Modifier.size(5.dp))
                 }
             }
         }

@@ -287,9 +287,10 @@ fun ABMCiudadScreen() {
                 text = mensaje,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = Color.Black
             )
         }
+
     }
 
 
